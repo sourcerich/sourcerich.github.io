@@ -1,4 +1,4 @@
-# 📁 Richie Patil Portfolio (Previous Version)
+# 📁 Richie Patil Portfolio
 
 > **A responsive portfolio website built with React, Tailwind CSS, and Framer Motion.**
 > ✨ Check out the website → [Portfolio Website](https://sourcerich.github.io)
