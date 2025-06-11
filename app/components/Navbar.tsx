@@ -1,47 +1,40 @@
-import { auth, signOut, signIn } from "@/auth";
-import Image from "next/image";
-import Link from "next/link";
+"use client";
 
-const Navbar = async () => {
-  const session = await auth();
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import clsx from "clsx";
+
+const NavBar = () => {
+  const pathname = usePathname();
+
+  const navItems = [
+    { name: "Home", href: "/" },
+    { name: "Work", href: "/work" },
+    { name: "About", href: "/about" },
+  ];
+
   return (
-    <header className="px-5 py-3 bg-white shadow-sm font-work-sans">
-      <nav className="flex justify-between items-center">
-        <Link href="/">
-          <Image src="/R.png" alt="Logo" width={40} height={40} />
-        </Link>
-        <div className="flex items-center gap-5 text-black">
-          {session && session?.user ? (
-            <>
-              <Link href="/stratup/create">
-                <span>Create</span>
-              </Link>
-              <form
-                action={async () => {
-                  "use server";
-                  await signOut({ redirectTo: "/" });
-                }}
-              >
-                <button type="submit">Logout</button>
-              </form>
-              <Link href={`user/${session.user.id}`}>
-                <span>{session && session?.user?.name}</span>
-              </Link>
-            </>
-          ) : (
-            <form
-              action={async () => {
-                "use server";
-                await signIn("github");
-              }}
+    <nav className="fixed bottom-10 left-1/2 transform -translate-x-1/2 z-50">
+      <ul className="flex gap-6">
+        {navItems.map(({ name, href }) => (
+          <li key={name}>
+            <Link
+              href={href}
+              className={clsx(
+                "relative font-medium text-black transition-all duration-500",
+                pathname === href ? "font-bold" : ""
+              )}
             >
-              <button type="submit">Login</button>
-            </form>
-          )}
-        </div>
-      </nav>
-    </header>
+              <span className="block">{name}</span>
+              <span className="absolute left-0 top-0 opacity-0 hover:opacity-100 transition-opacity duration-500 ease-[cubic-bezier(0.76,0,0.24,1)]">
+                {name}
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 };
 
-export default Navbar;
+export default NavBar;
